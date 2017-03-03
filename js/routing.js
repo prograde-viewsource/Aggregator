@@ -1,4 +1,4 @@
-four51.app.config(['$routeProvider', '$locationProvider', 'ConfigService', function($routeProvider, $locationProvider, ConfigService) {
+four51.app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$locationProvider.html5Mode(true);
 
 	var concatProductView = function(routeParams){
@@ -8,8 +8,6 @@ four51.app.config(['$routeProvider', '$locationProvider', 'ConfigService', funct
 	var concatSpecFormView = function(routeParams){
 		return 'specform.hcf?id=' + routeParams.productInteropID;
 	}
-
-	var redirectionVar = '/catalog/' + ConfigService.config.category;
 
 	$routeProvider.
 		when('/listOrders', { templateUrl: 'partials/listOrders.html', controller: 'ListOrdersCtrl' }).
@@ -47,5 +45,5 @@ four51.app.config(['$routeProvider', '$locationProvider', 'ConfigService', funct
 		when('/reports', { templateUrl: 'partials/reportsView.html', controller: 'ReportsCtrl' }).
 		when('/report/:id', { templateUrl: 'partials/Reporting/reportView.html', controller: 'ReportCtrl' }).
 		when('/contactus', { templateUrl: 'partials/Messages/contactus.html' }).
-		otherwise({redirectTo: redirectionVar});
+		otherwise({redirectTo: '/catalog'});
 }]);

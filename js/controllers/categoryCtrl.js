@@ -1,5 +1,5 @@
-four51.app.controller('CategoryCtrl', ['$routeParams', '$sce', '$scope', '$451', 'Category', 'Product', 'Nav',
-function ($routeParams, $sce, $scope, $451, Category, Product, Nav) {
+four51.app.controller('CategoryCtrl', ['$routeParams', '$sce', '$scope', '$451', 'Category', 'Product', 'Nav', 'ConfigService',
+function ($routeParams, $sce, $scope, $451, Category, Product, Nav, ConfigService) {
 	$scope.productLoadingIndicator = true;
 	$scope.settings = {
 		currentPage: 1,
@@ -11,7 +11,7 @@ function ($routeParams, $sce, $scope, $451, Category, Product, Nav) {
 
 	function _search() {
 		$scope.searchLoading = true;
-		Product.search($routeParams.categoryInteropID, null, null, function (products, count) {
+		Product.search(ConfigService.config.category, null, null, function (products, count) {
 			$scope.products = products;
 			$scope.productCount = count;
 			$scope.productLoadingIndicator = false;
@@ -22,24 +22,6 @@ function ($routeParams, $sce, $scope, $451, Category, Product, Nav) {
 	$scope.$watch('settings.currentPage', function(n, o) {
 		if (n != o || (n == 1 && o == 1))
 			_search();
-	});
-
-	if ($routeParams.categoryInteropID) {
-	    $scope.categoryLoadingIndicator = true;
-        Category.get($routeParams.categoryInteropID, function(cat) {
-            $scope.currentCategory = cat;
-	        $scope.categoryLoadingIndicator = false;
-        });
-    }
-	else if($scope.tree){
-		$scope.currentCategory ={SubCategories:$scope.tree};
-	}
-
-
-	$scope.$on("treeComplete", function(data){
-		if (!$routeParams.categoryInteropID) {
-			$scope.currentCategory ={SubCategories:$scope.tree};
-		}
 	});
 
     // panel-nav
