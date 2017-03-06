@@ -1,6 +1,7 @@
-four51.app.controller('CategoryCtrl', ['$routeParams', '$sce', '$scope', '$451', 'Category', 'Product', 'Nav', 'ConfigService',
-function ($routeParams, $sce, $scope, $451, Category, Product, Nav, ConfigService) {
+four51.app.controller('CategoryCtrl', ['$routeParams', '$sce', '$scope', '$451', 'Category', 'Product', 'Nav', 'ConfigService', 'Order',
+function ($routeParams, $sce, $scope, $451, Category, Product, Nav, ConfigService, Order) {
 	$scope.productLoadingIndicator = true;
+	$scope.addToOrderText = "Add To Cart";
 	$scope.settings = {
 		currentPage: 1,
 		pageSize: 40
@@ -11,13 +12,56 @@ function ($routeParams, $sce, $scope, $451, Category, Product, Nav, ConfigServic
 
 	function _search() {
 		$scope.searchLoading = true;
-		Product.search(ConfigService.config.category, null, null, function (products, count) {
+		Product.search(ConfigService.config.categoryID, null, null, function (products, count) {
 			$scope.products = products;
 			$scope.productCount = count;
 			$scope.productLoadingIndicator = false;
 			$scope.searchLoading = false;
 		}, $scope.settings.currentPage, $scope.settings.pageSize);
 	}
+
+	$scope.addToOrder = function(){
+		if($scope.lineItemErrors && $scope.lineItemErrors.length){
+			$scope.showAddToCartErrors = true;
+			return;
+		}
+		if(!$scope.currentOrder){
+			$scope.currentOrder = { };
+			$scope.currentOrder.LineItems = [];
+		}
+		if (!$scope.currentOrder.LineItems)
+			$scope.currentOrder.LineItems = [];
+		if($scope.allowAddFromVariantList){
+			angular.forEach($scope.variantLineItems, function(item){
+				if(item.Quantity > 0){
+					$scope.currentOrder.LineItems.push(item);
+					$scope.currentOrder.Type = item.PriceSchedule.OrderType;
+				}
+			});
+		}else{
+			$scope.currentOrder.LineItems.push($scope.LineItem);
+			$scope.currentOrder.Type = $scope.LineItem.PriceSchedule.OrderType;
+		}
+		$scope.addToOrderIndicator = true;
+		//$scope.currentOrder.Type = (!$scope.LineItem.Product.IsVariantLevelInventory && $scope.variantLineItems) ? $scope.variantLineItems[$scope.LineItem.Product.Variants[0].InteropID].PriceSchedule.OrderType : $scope.LineItem.PriceSchedule.OrderType;
+		// shipper rates are not recalcuated when a line item is added. clearing out the shipper to force new selection, like 1.0
+		Order.clearshipping($scope.currentOrder).
+			save($scope.currentOrder,
+				function(o){
+					$scope.user.CurrentOrderID = o.ID;
+					User.save($scope.user, function(){
+						$scope.addToOrderIndicator = true;
+						$location.path('/cart');
+					});
+				},
+				function(ex) {
+					$scope.addToOrderIndicator = false;
+					$scope.lineItemErrors.push(ex.Detail);
+					$scope.showAddToCartErrors = true;
+					//$route.reload();
+				}
+		);
+	};
 
 	$scope.$watch('settings.currentPage', function(n, o) {
 		if (n != o || (n == 1 && o == 1))
