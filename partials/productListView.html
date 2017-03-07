@@ -19,9 +19,7 @@
             </div>
             <ul>
                 <li id="451_lst_prod" ng-repeat="product in products | paginate:(settings.currentPage-1) * settings.pageSize | limitTo:settings.pageSize | orderBy:sorter:direction">
-                    <div class="well">
-                        <shortproductview p="product" user="user" />
-                    </div>
+                    <shortproductview p="product" user="user" />
                 </li>
             </ul>
         </nav>
