@@ -1,53 +1,19 @@
-four51.app.controller('DealBannerCtrl', ['$location', '$route', '$scope', '$451', 'User',
-function ($location, $route, $scope, $451, User) {
-    $scope.Logout = function(){
-        User.logout();
-        if ($scope.isAnon) {
-            $location.path("/catalog");
-            User.login();
-        }
-    };
+four51.app.controller('DealBannerCtrl', ['$scope', 'ConfigService',
+function ($scope, ConfigService) {
+    $scope.endDate = ConfigService.config.finalDate;
+    $scope.coordinator = ConfigService.config.coordinator;
+    $scope.dateDifference = {};
 
-	$scope.refreshUser = function() {
-		store.clear();
-	}
+    setInterval(function() {
+        var currentTime = new Date().getTime();
 
-    // http://stackoverflow.com/questions/12592472/how-to-highlight-a-current-menu-item-in-angularjs
-    $scope.isActive = function(path) {
-        var cur_path = $location.path().replace('/', '');
-        var result = false;
+        var distance = $scope.endDate - currentTime;
 
-        if (path instanceof Array) {
-            angular.forEach(path, function(p) {
-                if (p == cur_path && !result)
-                    result = true;
-            });
-        }
-        else {
-            if (cur_path == path)
-                result = true;
-        }
-        return result;
-    };
-    // extension of above isActive in path
-    $scope.isInPath = function(path) {
-        var cur_path = $location.path().replace('/', '');
-        var result = false;
-
-        if(cur_path.indexOf(path) > -1) {
-            result = true;
-        }
-        else {
-            result = false;
-        }
-        return result;
-    };
-
-	$scope.Clear = function() {
-		localStorage.clear();
-	}
-
-	$scope.$on('event:orderUpdate', function(event, order) {
-		$scope.cartCount = order ? (order.Status == 'Unsubmitted' || order.Status == 'AwaitingApproval') ? order.LineItems.length : null : null;
-	});
+        $scope.$apply(function() {
+            $scope.dateDifference.days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            $scope.dateDifference.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            $scope.dateDifference.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            $scope.dateDifference.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        });
+    }, 1000);
 }]);

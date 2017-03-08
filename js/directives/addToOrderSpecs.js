@@ -1,9 +1,9 @@
-four51.app.directive('addtoorderspecs', ['$routeParams',  function($routeParams) {
+four51.app.directive('addtoorderspecs', ['$routeParams', 'ConfigService',  function($routeParams, ConfigService) {
 	var obj = {
         restrict: 'E',
         template: '<div ng-include="specForm">',
         link: function (scope) {
-            scope.specForm = 'addToOrderSpecForm.hcf?id=' + scope.LineItem.Product.InteropID + '&r=' + Math.random();
+            scope.specForm = 'addToOrderSpecForm.hcf?id=' + ConfigService.config.productID + '&r=' + Math.random();
         }
     };
 	return obj;

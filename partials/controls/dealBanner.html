@@ -1,5 +1,25 @@
-<div class="row">
-    <div class="col-xs-12">
-        <p>hi</p>
+<div>
+    <div class="row">
+        <div class="col-xs-6">
+            Signup Deadline: <strong>{{endDate | date}}</strong>
+        </div>
+        <div class="col-xs-6">
+            Coordinator: <strong><span ng-bind='coordinator'></span></strong>
+        </div>
+    </div>
+    <br />
+    <div class="row countdown-row">
+        <div class="col-xs-1 text-center">
+            <strong><span ng-bind='dateDifference.days'></span></strong><br />Days
+        </div>
+        <div class="col-xs-1 text-center">
+            <strong><span ng-bind='dateDifference.hours'></span></strong><br />Hours
+        </div>
+        <div class="col-xs-1 text-center">
+            <strong><span ng-bind='dateDifference.minutes'></span></strong><br />Minutes
+        </div>
+        <div class="col-xs-1 text-center">
+            <strong><span ng-bind='dateDifference.seconds'></span></strong><br />Seconds
+        </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
-four51.app.controller('CategoryCtrl', ['$routeParams', '$sce', '$scope', '$451', 'Category', 'Product', 'Nav', 'ConfigService', 'Order',
-function ($routeParams, $sce, $scope, $451, Category, Product, Nav, ConfigService, Order) {
+four51.app.controller('CategoryCtrl', ['$routeParams', '$sce', '$scope', '$451', 'Category', 'Product', 'Nav', 'ConfigService', 'Order', 'ProductDisplayService', 'User', '$location',
+function ($routeParams, $sce, $scope, $451, Category, Product, Nav, ConfigService, Order, ProductDisplayService, User, $location) {
 	$scope.productLoadingIndicator = true;
+    $scope.LineItem = {};
 	$scope.addToOrderText = "Add To Cart";
 	$scope.settings = {
 		currentPage: 1,
@@ -10,14 +11,24 @@ function ($routeParams, $sce, $scope, $451, Category, Product, Nav, ConfigServic
 		if(d) return $sce.trustAsHtml(d);
 	}
 
+	function setDefaultQty(lineitem) {
+		if (lineitem.PriceSchedule && lineitem.PriceSchedule.DefaultQuantity != 0)
+			$scope.LineItem.Quantity = lineitem.PriceSchedule.DefaultQuantity;
+	}
+
 	function _search() {
 		$scope.searchLoading = true;
-		Product.search(ConfigService.config.categoryID, null, null, function (products, count) {
-			$scope.products = products;
-			$scope.productCount = count;
-			$scope.productLoadingIndicator = false;
+		
+		ProductDisplayService.getProductAndVariant(ConfigService.config.productID, null, function (data) {
+			$scope.LineItem.Product = data.product;
+			$scope.LineItem.Variant = data.variant;
+			ProductDisplayService.setNewLineItemScope($scope);
+			ProductDisplayService.setProductViewScope($scope);
+			setDefaultQty($scope.LineItem);
 			$scope.searchLoading = false;
-		}, $scope.settings.currentPage, $scope.settings.pageSize);
+			$scope.productLoadingIndicator = false;
+			$scope.setAddToOrderErrors();
+		}, $scope.settings.currentPage, $scope.settings.pageSize, null);
 	}
 
 	$scope.addToOrder = function(){

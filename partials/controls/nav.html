@@ -11,7 +11,7 @@
                     <li class="products" ng-class="{'active': isInPath('catalog') || isInPath('product') || isInPath('cart/default')}">
                         <a id="451qa_home_link" ng-show="Four51User.isAuthenticated()" href="catalog">
                             <i class="fa fa-home"></i>
-                            <span class="hidden-xs">{{'Products' | rc}}</span>
+                            <span class="hidden-xs">{{'Product' | rc}}</span>
                         </a>
                     </li>
                     <li class="order" ng-class="{'active': isActive('order'), 'active-xs': isActive('favoriteorders')}">
@@ -30,11 +30,6 @@
                         <a id="451qa_cont_link" href="contactus">
                             <i class="fa fa-phone"></i>
                             <span class="hidden-xs">{{'Contact Us' | r}}</span>
-                        </a>
-                    </li>	   				<li class="favorites hidden-xs" ng-class="{'active': isActive('search')}">
-                        <a id="451qa_cont_link" href="search">
-                            <i class="fa fa-search"></i>
-                            <span class="hidden-xs">Search</span>
                         </a>
                     </li>
                     <li ng-class="{'active': isActive(['admin', 'addresses', 'address', 'messages', 'message'])}">
@@ -60,11 +55,6 @@
                                     {{'Addresses' | r}}
                                 </a>
                             </li>
-                    <li id="451qa_fave_link" class="favorites hidden-xs" ng-class="{'active': isActive('favoriteorders')}">
-                        <a href="favoriteorders">
-{{'Favorites' | r}}
-                        </a>
-                    </li>
                             <li id="451qa_mesg_link" ng-show="user.Permissions.contains('ViewMessaging')" class="messages">
                                 <a href="message">
                                     {{'Messages' | r}}

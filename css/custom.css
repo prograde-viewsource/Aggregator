@@ -67,3 +67,9 @@ productlistview .panel {
 .container-view {
     margin-top:30px;
 }
+.countdown-row :not(:last-of-type) {
+    border-right: black 1px solid;
+}
+.product-detail-default {
+    margin-top:10px;
+}
