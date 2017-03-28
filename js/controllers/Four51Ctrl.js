@@ -1,5 +1,5 @@
-four51.app.controller('Four51Ctrl', ['$scope', '$route', '$location', '$451', 'User', 'Order', 'Security', 'OrderConfig', 'Category', 'AppConst','XLATService', 'GoogleAnalytics', 'ConfigService',
-function ($scope, $route, $location, $451, User, Order, Security, OrderConfig, Category, AppConst, XLATService, GoogleAnalytics, ConfigService) {
+four51.app.controller('Four51Ctrl', ['$scope', '$route', '$location', '$451', 'User', 'Order', 'Security', 'OrderConfig', 'Category', 'AppConst','XLATService', 'GoogleAnalytics', 'ConfigService', '$http',
+function ($scope, $route, $location, $451, User, Order, Security, OrderConfig, Category, AppConst, XLATService, GoogleAnalytics, ConfigService, $http) {
 	$scope.AppConst = AppConst;
 	$scope.scroll = 0;
 	$scope.isAnon = $451.isAnon; //need to know this before we have access to the user object
@@ -25,6 +25,13 @@ function ($scope, $route, $location, $451, User, Order, Security, OrderConfig, C
 		if (Security.isAuthenticated()) {
 			User.get(function (user) {
 				$scope.user = user;
+				$http.get('https://aggregator.prowebservicehost.com/api/GetPromotion/' + $scope.user.Company.Name).then(function(result){
+					$scope.Promotion = result.data;
+					$scope.Promotion.FinalDate = new Date($scope.Promotion.FinalDate);
+					$scope.Promotion.StartDate = new Date($scope.Promotion.StartDate);
+				}, function(error){
+				    console.log(error);
+				});
                 $scope.user.Culture.CurrencyPrefix = XLATService.getCurrentLanguage(user.CultureUI, user.Culture.Name)[1];
                 $scope.user.Culture.DateFormat = XLATService.getCurrentLanguage(user.CultureUI, user.Culture.Name)[2];
 

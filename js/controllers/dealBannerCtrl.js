@@ -1,13 +1,11 @@
 four51.app.controller('DealBannerCtrl', ['$scope', 'ConfigService',
 function ($scope, ConfigService) {
-    $scope.endDate = ConfigService.config.finalDate;
-    $scope.coordinator = ConfigService.config.coordinator;
     $scope.dateDifference = {};
 
     setInterval(function() {
         var currentTime = new Date().getTime();
 
-        var distance = $scope.endDate - currentTime;
+        var distance = $scope.Promotion.FinalDate - currentTime;
 
         $scope.$apply(function() {
             $scope.dateDifference.days = Math.floor(distance / (1000 * 60 * 60 * 24));

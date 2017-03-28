@@ -27,7 +27,7 @@
         <!--<section class="hidden-print">
             <branding />
         </section>-->
-        <section class="container-view">
+        <section class="container-view" ng-style="{'margin-top' : isInPath('catalog') ? '130px' : '40px'}">
             <ng-view autoscroll />
         </section>
         <section class="hidden-print">
@@ -134,7 +134,6 @@
     <script src="js/services/XLATService.js" data-group="source"></script>
     <script src="js/services/kitService.js" data-group="source"></script>
     <script src="js/services/googleAnalytics.js" data-group="source"></script>
-    <script src="js/services/configService.js" data-group="source"></script>
 
     <script src="js/factories/fileReader.js" data-group="source"></script>
 

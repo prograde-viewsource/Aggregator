@@ -18,8 +18,7 @@ function ($routeParams, $sce, $scope, $451, Category, Product, Nav, ConfigServic
 
 	function _search() {
 		$scope.searchLoading = true;
-		
-		ProductDisplayService.getProductAndVariant(ConfigService.config.productID, null, function (data) {
+		ProductDisplayService.getProductAndVariant($scope.Promotion.ProductInterop, null, function (data) {
 			$scope.LineItem.Product = data.product;
 			$scope.LineItem.Variant = data.variant;
 			ProductDisplayService.setNewLineItemScope($scope);
@@ -74,7 +73,7 @@ function ($routeParams, $sce, $scope, $451, Category, Product, Nav, ConfigServic
 		);
 	};
 
-	$scope.$watch('settings.currentPage', function(n, o) {
+	$scope.$watch('Promotion', function(n, o) {
 		if (n != o || (n == 1 && o == 1))
 			_search();
 	});

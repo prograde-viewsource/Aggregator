@@ -1,5 +1,5 @@
-four51.app.controller('CheckOutViewCtrl', ['$scope', '$routeParams', '$location', '$filter', '$rootScope', '$451', 'Analytics', 'User', 'Order', 'OrderConfig', 'FavoriteOrder', 'AddressList',
-function ($scope, $routeParams, $location, $filter, $rootScope, $451, Analytics, User, Order, OrderConfig, FavoriteOrder, AddressList) {
+four51.app.controller('CheckOutViewCtrl', ['$scope', '$routeParams', '$location', '$filter', '$rootScope', '$451', 'Analytics', 'User', 'Order', 'OrderConfig', 'FavoriteOrder', 'AddressList', '$http',
+function ($scope, $routeParams, $location, $filter, $rootScope, $451, Analytics, User, Order, OrderConfig, FavoriteOrder, AddressList, $http) {
 	$scope.errorSection = 'open';
 
 	$scope.isEditforApproval = $routeParams.id != null && $scope.user.Permissions.contains('EditApprovalOrder');
@@ -24,6 +24,19 @@ function ($scope, $routeParams, $location, $filter, $rootScope, $451, Analytics,
 //				if ($scope.user.Company.GoogleAnalyticsCode) {
 //					Analytics.trackOrder(data, $scope.user);
 //				}
+				var totalOrdered = 0;
+				angular.forEach(data.LineItems, function(i){
+					totalOrdered += i.Quantity * i.Product.QuantityMultiplier;
+				});
+				$http.post('https://aggregator.prowebservicehost.com/api/AggregatorOrders', {
+					"PromotionID" : $scope.Promotion.PromotionID,
+					"Quantity" : totalOrdered,
+					"Four51OrderID" : data.ExternalID
+				}).then(function(data){
+					console.log(data);
+				}, function(error){
+					console.log(error);
+				});
 				$scope.user.CurrentOrderID = null;
 				User.save($scope.user, function(data) {
 			        $scope.user = data;

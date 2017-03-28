@@ -15,17 +15,19 @@
 .product-image-large {border:1px solid #909090;}
 .thumbnail img {border:1px solid #909090}
 
-.navbar-default  {background-color: #0082C6;}
+.navbar-default  {background-color: transparent;}
+.navbar-default section  {background-color: #0082C6;}
 .navbar-nav a  {color: #FFFFFF !important;}
 .navbar-nav li.active a  {background-color: #0071AD !important;}
 .navbar-nav li.active a  {color: #FFFFFF !important;}
-.navbar-default  {border-color: #0082C6;}
+.navbar-default  {border-color: transparent;}
+.navbar-default section  {border-color: #0082C6;}
 body  {background-color: #F0F0F0;}
 .text-primary  {color: #0C2A3A;}
 .text-info  {color: #31708F;}
 body a  {color: #0C2A3A;}
-.btn-primary  {background-color: #0C2A3A; color: #FFFFF; border-color: #0C2A3A;}
-.btn-primary:hover  {background-color: #051118; color: #FFFFF;}
+.btn-primary  {background-color: #0C2A3A; color: #FFFFFF; border-color: #0C2A3A;}
+.btn-primary:hover  {background-color: #051118; color: #FFFFFF;}
 .btn-default  {background-color: #FFFFFF; color: #333333; border-color: #CCCCCC;}
 .btn-default:hover  {background-color: #EBEBEB; color: #333333;}
 .btn-info  {background-color: #5BC0DE; color: #FFFFFF; border-color: #46B8DA;}
@@ -65,11 +67,19 @@ productlistview .panel {
     margin-top: 15px;
 }
 .container-view {
-    margin-top:30px;
+    margin-top:130px;
 }
 .countdown-row :not(:last-of-type) {
     border-right: black 1px solid;
 }
 .product-detail-default {
     margin-top:10px;
+}
+.deal-banner{
+    background-color: #dadada;
+    padding: 15px !important;
+    box-shadow: #878787 0px 0px 4px;
+}
+.navbar-fixed-top.headroom.headroom--unpinned {
+    top: -180px;
 }
