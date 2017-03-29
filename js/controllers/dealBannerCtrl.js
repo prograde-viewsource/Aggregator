@@ -1,5 +1,5 @@
-four51.app.controller('DealBannerCtrl', ['$scope', 'ConfigService',
-function ($scope, ConfigService) {
+four51.app.controller('DealBannerCtrl', ['$scope',
+function ($scope) {
     $scope.dateDifference = {};
 
     setInterval(function() {

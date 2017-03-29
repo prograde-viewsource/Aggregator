@@ -1,5 +1,5 @@
-four51.app.controller('CategoryCtrl', ['$routeParams', '$sce', '$scope', '$451', 'Category', 'Product', 'Nav', 'ConfigService', 'Order', 'ProductDisplayService', 'User', '$location',
-function ($routeParams, $sce, $scope, $451, Category, Product, Nav, ConfigService, Order, ProductDisplayService, User, $location) {
+four51.app.controller('CategoryCtrl', ['$routeParams', '$sce', '$scope', '$451', 'Category', 'Product', 'Nav', 'Order', 'ProductDisplayService', 'User', '$location',
+function ($routeParams, $sce, $scope, $451, Category, Product, Nav, Order, ProductDisplayService, User, $location) {
 	$scope.productLoadingIndicator = true;
     $scope.LineItem = {};
 	$scope.addToOrderText = "Add To Cart";
