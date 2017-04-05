@@ -1,8 +1,9 @@
 four51.app.factory('Order', ['$resource', '$rootScope', '$451', 'Security', 'Error', 'User', function($resource, $rootScope, $451, Security, Error, User) {
 	var _multipleShip = false;
 	function _then(fn, data, broadcast) {
-		if (angular.isFunction(fn))
+		if (angular.isFunction(fn)){
 			fn(data);
+		}
 		if (!broadcast)
 			$rootScope.$broadcast('event:orderUpdate', data);
 	}
