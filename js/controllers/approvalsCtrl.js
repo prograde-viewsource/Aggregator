@@ -52,23 +52,31 @@ function ($scope,  $location, OrderSearchCriteria, OrderSearch, Order) {
     
     $scope.approveSelected = function() {
         $scope.approvalIndicator = true;
-        angular.forEach($scope.orders, function(o, i) {
+        $scope.toBeApproved = [];
+        angular.forEach($scope.orders, function(o) {
             if ($scope.rowSelection[o.ExternalID]) {
-                Order.approve(o, function($scope){
-                    console.log($scope)
-                    console.log(i);
-                    if (i == $scope.orders.length - 1) {
-                        console.log($scope)
+                $scope.toBeApproved.push(o);
+            }
+        });
+        angular.forEach($scope.toBeApproved, function(o, i) {
+            if ($scope.rowSelection[o.ExternalID]) {
+                Order.approve(o, function(o, $scope){
+                    if (i == $scope.toBeApproved.length - 1) {
                         angular.forEach($scope.OrderSearchCriteria, function(c){
                             if (c.Type === "Standard" && c.Status === "AwaitingApproval") {
                                 Query(c);
-                                console.log($scope)
                                 $scope.approvalIndicator = false;
                             }
                         });
                     }
-                });
+                }, null, $scope);
             }
+        });
+    }
+
+    $scope.selectAllChange = function() {
+        angular.forEach($scope.orders, function(o,i){
+            $scope.selectAll ? $scope.rowSelection[o.ExternalID] = true : $scope.rowSelection[o.ExternalID] = false;
         });
     }
 }]);

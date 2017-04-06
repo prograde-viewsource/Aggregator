@@ -148,7 +148,7 @@
                             items-per-page="settings.pageSize" direction-links="true"></pagination>
             </div>
             <div class="row hidden-xs text-info">
-                <div class="col-xs-12 col-sm-1"></div>
+                <div class="col-xs-12 col-sm-1"><input type="checkbox" ng-model="selectAll" ng-change="selectAllChange()" ></div>
                 <div class="col-xs-12 col-sm-1">{{'ID' | r | xlat}}</div>
                 <div class="col-xs-12 col-sm-2">{{'Type' | r | xlat}}</div>
                 <div class="col-xs-12 col-sm-2">{{'Status' | r | xlat}}</div>

@@ -1,8 +1,8 @@
 four51.app.factory('Order', ['$resource', '$rootScope', '$451', 'Security', 'Error', 'User', function($resource, $rootScope, $451, Security, Error, User) {
 	var _multipleShip = false;
-	function _then(fn, data, broadcast) {
+	function _then(fn, data, broadcast, scope) {
 		if (angular.isFunction(fn)){
-			fn(data);
+			fn(data, scope);
 		}
 		if (!broadcast)
 			$rootScope.$broadcast('event:orderUpdate', data);
@@ -123,13 +123,13 @@ four51.app.factory('Order', ['$resource', '$rootScope', '$451', 'Security', 'Err
 		);
 	}
 
-	var _approve = function(order, success, error) {
+	var _approve = function(order, success, error, scope) {
 		$resource($451.api('order/approve/:id'), {'id': order.ID}, { approve: { method: 'PUT', params: { 'comment': order.ApprovalComment}}}).approve().$promise.then(
 			function(o) {
                 store.set('451Cache.Order.' + o.ID, o);
                 User.get(function(user) {
                     _extend(o, user);
-                    _then(success, o);
+                    _then(success, o, null, scope);
                 });
 			},
 			function(ex) {
