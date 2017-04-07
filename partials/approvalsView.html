@@ -1,6 +1,6 @@
 <section class="order-search-view">
     <loadingindicator ng-show="approvalIndicator" title="Approving Orders..." />
-    <p class="alert alert-info text-center" ng-hide="orders">There are no orders for approval currently.</p>
+    <p class="alert alert-info text-center" ng-hide="orders && orders.length > 0">There are no orders for approval currently.</p>
     <!--<div class="panel panel-default" ng-if="!hasStandardTypes && !hasReplenishmentTypes && !hasPriceRequestTypes">
         <div class="panel-heading">
             <h3 class="panel-title">{{'Orders' | r | xlat}}</h3>
@@ -129,7 +129,7 @@
             </h3>
         </div>
     </div>-->
-    <div class="panel panel-default" ng-show="orders">
+    <div class="panel panel-default" ng-show="orders.length > 0">
         <div class="panel-heading">
             <h3 class="panel-title">
                 <span class="text-info" ng-show="orderSearchStat.Type">
