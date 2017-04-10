@@ -37,10 +37,40 @@
                             </span>
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <h3 class="text-center full-width"><strong>Current Quantity Reserved<br />{{Promotion.TotalOrdered}}</strong></h3>
-                            <h3 class="text-center full-width"><strong>Guarenteed Price<br />{{Promotion.CurrentPrice | culturecurrency}}</strong></h3>
+                    <div class="panel panel-default info-grid">
+                        <div class="panel-table">
+                            <div class="row row-headers">
+                                <div class="col-xs-6 vertical-center">
+                                    <p class="text-center full-width"><strong>Quantity Reserved</strong></p>
+                                </div>
+                                <div class="col-xs-6 vertical-center">
+                                    <p class="text-center full-width"><strong>Next Tier</strong></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 vertical-center">
+                                    <p class="text-center full-width"><strong>{{Promotion.TotalOrdered}}</strong></p>
+                                </div>
+                                <div class="col-xs-6 vertical-center">
+                                    <p class="text-center full-width"><strong>{{Promotion.ToNextTier}}</strong></p>
+                                </div>
+                            </div>
+                            <div class="row row-headers">
+                                <div class="col-xs-6 vertical-center">
+                                    <p class="text-center full-width"><strong>Guarenteed Price</strong></p>
+                                </div>
+                                <div class="col-xs-6 vertical-center">
+                                    <p class="text-center full-width"><strong>Number of Orders</strong></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 vertical-center">
+                                    <p class="text-center full-width"><strong>{{Promotion.CurrentPrice | culturecurrency}}</strong></p>
+                                </div>
+                                <div class="col-xs-6 vertical-center">
+                                    <p class="text-center full-width"><strong>{{Promotion.NumberOfOrders}}</strong></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -215,7 +245,6 @@
                     </div>
                 </div>
             </section>
-
         </div>
     </div>
 </section>

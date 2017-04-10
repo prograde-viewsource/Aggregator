@@ -83,3 +83,12 @@ productlistview .panel {
 .navbar-fixed-top.headroom.headroom--unpinned {
     top: -180px;
 }
+.info-grid .panel-table {
+    margin: 0px;
+}
+.info-grid p {
+    margin: 0px;
+}
+.info-grid .row-headers {
+    background-color: #c3c3c3;
+}
