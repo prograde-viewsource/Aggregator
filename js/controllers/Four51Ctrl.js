@@ -29,6 +29,12 @@ function ($scope, $route, $location, $451, User, Order, Security, OrderConfig, C
 					$scope.Promotion = result.data;
 					$scope.Promotion.FinalDate = new Date($scope.Promotion.FinalDate);
 					$scope.Promotion.StartDate = new Date($scope.Promotion.StartDate);
+					angular.forEach($scope.Promotion.PriceMatrix, function(p){
+						if (p.Quantity - $scope.Promotion.TotalOrdered > 0 && (!$scope.Promotion.ToNextTier || p.Quantity - $scope.Promotion.TotalOrdered < $scope.Promotion.ToNextTier)) {
+							$scope.Promotion.ToNextTier = p.Quantity - $scope.Promotion.TotalOrdered;
+						}
+					});
+					if (!$scope.Promotion.ToNextTier) $scope.Promotion.ToNextTier = '-';
 				}, function(error){
 				    console.log(error);
 				});

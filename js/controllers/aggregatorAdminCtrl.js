@@ -6,7 +6,7 @@ four51.app.controller('AggregatorAdminCtrl', ['$scope', '$http', '$location', 'P
     });
     if (!foundit) $location.path('catalog');
 
-    PromotionsService.getPromotions(function(p){
+    PromotionsService.getBuyerPromotions($scope.user.Company.Name, function(p){
         $scope.promotions = p;
     }, function(e){
         console.log(e);
