@@ -7,6 +7,10 @@ function ($scope) {
 
         var distance = $scope.Promotion.FinalDate - currentTime;
 
+        if (distance < 0) {
+            console.log("We are past the deadline");
+        }
+
         $scope.$apply(function() {
             $scope.dateDifference.days = Math.floor(distance / (1000 * 60 * 60 * 24));
             $scope.dateDifference.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

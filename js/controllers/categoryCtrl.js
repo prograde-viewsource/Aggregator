@@ -39,8 +39,38 @@ function ($routeParams, $sce, $scope, $451, Category, Product, Nav, Order, Produ
 			$scope.currentOrder = { };
 			$scope.currentOrder.LineItems = [];
 		}
-		if (!$scope.currentOrder.LineItems)
-			$scope.currentOrder.LineItems = [];
+		else if ($scope.currentOrder.LineItems.length > 0){
+			var hasOtherItems = false;
+			angular.forEach($scope.currentOrder.LineItems, function(i){
+				if (i.Product.InteropID != $scope.Promotion.ProductInterop) {
+					hasOtherItems = true;
+				}
+			});
+		}
+		if (hasOtherItems) {
+			if (confirm("You currently have an item in your cart that is not a part of this promotion. Would you like to clear your cart to proceed?")) {
+				Order.delete($scope.currentOrder,
+					function(){
+						$scope.currentOrder = { };
+						$scope.currentOrder.LineItems = [];
+						finishAddToOrder();
+					},
+					function(ex) {
+						$scope.actionMessage = 'An error occurred: ' + ex.Message;
+						$scope.displayLoadingIndicator = false;
+					}
+				);
+			}
+			else {
+				return;
+			}
+		}
+		else {
+			finishAddToOrder();
+		}
+	};
+
+	function finishAddToOrder() {
 		if($scope.allowAddFromVariantList){
 			angular.forEach($scope.variantLineItems, function(item){
 				if(item.Quantity > 0){
@@ -71,7 +101,7 @@ function ($routeParams, $sce, $scope, $451, Category, Product, Nav, Order, Produ
 					//$route.reload();
 				}
 		);
-	};
+	}
 
 	$scope.$watch('Promotion', function(n, o) {
 		if (n != o || (n == 1 && o == 1))
