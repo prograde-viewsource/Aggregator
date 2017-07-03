@@ -85,7 +85,7 @@
                                 {{LineItem.Variant.ExternalID}}
                             </h2>
                             <h2 class="text-success" ng-show="LineItem.PriceSchedule.PriceBreaks.length == 1" ng-if="!(user.Permissions.contains('HidePricing'))">
-                                {{LineItem.PriceSchedule.PriceBreaks[0].Price | culturecurrency}}
+                                {{Promotion.CurrentPrice | culturecurrency}}
                             </h2>
                         </div>
                     </div>
