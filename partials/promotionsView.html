@@ -1,0 +1,169 @@
+<style>
+    .no-animate {
+        -webkit-transition: none !important;
+        transition: none !important;
+    }
+
+    .break {
+        white-space: pre-wrap;
+        /* css-3 */
+        white-space: -moz-pre-wrap;
+        /* Mozilla, since 1999 */
+        white-space: -pre-wrap;
+        /* Opera 4-6 */
+        white-space: -o-pre-wrap;
+        /* Opera 7 */
+        word-wrap: break-word;
+        /* Internet Explorer 5.5+ */
+        width: 100%;
+        text-align: left;
+    }
+
+    .i-override {
+        position: relative !important;
+        top: unset !important;
+        left: unset !important;
+        color: black !important;
+    }
+</style>
+<section>
+    <loadingindicator ng-show="displayLoadingIndicator" />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{('Promotions' | r) | xlat}}</h3>
+        </div>
+        <div class="panel-body view-form-icon">
+            <div class="form-group">
+                <label ng-show="searchTerm">{{'Search' | r | xlat}}</label>
+                <input class='form-control' type="text" placeholder="{{'Search' | r | xlat}}" ng-model="searchTerm" autocomplete="off" />
+                <i class="fa fa-search"></i>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="alert alert-info" ng-if="promotions.length == 0">
+                            No saved promos found.
+                            <a class="btn btn-success btn-xs" href="promotion/edit">Create One
+                                <i class="fa fa-plus" />
+                            </a>
+                        </div>
+                        <table ng-if="promotions.length > 0" class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        ID
+                                    </th>
+                                    <th>
+                                        Active
+                                    </th>
+                                    <th>
+                                        Product Interop
+                                    </th>
+                                    <th>
+                                        Coordinator
+                                    </th>
+                                    <th>
+                                        Start Date
+                                    </th>
+                                    <th>
+                                        End Date
+                                    </th>
+                                    <th>
+                                        Price Schedule
+                                    </th>
+                                    <th>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="promo in promotions | filter:searchTerm">
+                                    <td>{{promo.PromotionID}}</td>
+                                    <td>
+                                        <i class="fa i-override" ng-class="{'fa-check-square-o': promo.IsActive, 'fa-square-o': !promo.IsActive}" />
+                                    </td>
+                                    <td style="max-width:200px;">
+                                        <a target="_blank" class="break" ng-href="{{'product/' + promo.ProductInterop}}">{{promo.ProductInterop}}</a>
+                                    </td>
+                                    <td>{{promo.Coordinator}}</td>
+                                    <td>{{renderDate(promo.StartDate)}}</td>
+                                    <td>{{renderDate(promo.FinalDate)}}</td>
+                                    <td>
+                                        <a ng-click="viewPromo(promo)" class="btn btn-sm btn-default">
+                                            <i class="fa fa-eye" />
+                                            <span class="hidden-xs"> View Prices</span>
+                                        </a>
+                                    </td>
+                                    <td class="actions-cell text-right">
+                                        <a ng-href="{{'promotion/' + promo.PromotionID}}" class="btn btn-sm btn-warning">
+                                            <i class="fa fa-pencil" />
+                                            <span class="hidden-xs"> Edit</span>
+                                        </a>
+                                        <a ng-click="deletePromo(promo)" class="btn btn-sm btn-danger">
+                                            <i class="fa fa-trash-o" />
+                                            <span class="hidden-xs"> Delete</a>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="navbar-fixed-bottom">
+            <div class="view-response-message alert-success text-center" alert-show="actionMessage">
+                <p>{{actionMessage | r | xlat}}</p>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <a class="btn btn-success pull-right" href="promotion/new">New Promo
+                <i class="fa fa-plus" />
+            </a>
+        </div>
+    </div>
+</section>
+
+<script type="text/ng-template" id="viewPromo.html">
+    <div class="modal-header">
+        <h4>Promotion Prices</h4>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="break in promo.PriceMatrix track by $index">
+                        <td>{{break.Quantity}}</td>
+                        <td>${{break.Price}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+            <a class="btn btn-warning pull-left" href="promotion/{{promo.PromotionID}}" ng-click="dismiss()"><i class="fa fa-pencil" /> Edit</a>
+            <a class="btn btn-default" ng-click="dismiss()">Close</a>
+    </div>
+</script>
+
+<script type="text/ng-template" id="deletePromo.html">
+    <div class="modal-header">
+        <h4>Delete Promo</h4>
+    </div>
+    <div class="modal-body">
+       <p>Are you sure?</p>
+    </div>
+    <div class="modal-footer">
+            <a class="btn btn-danger pull-left" ng-click="close()"><i class="fa fa-trash-o" /> Yes</a>
+            <a class="btn btn-default" ng-click="dismiss()">No</a>
+    </div>
+</script>
