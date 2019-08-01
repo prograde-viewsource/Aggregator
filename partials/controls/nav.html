@@ -26,10 +26,10 @@
                             <span class="hidden-xs">{{'Approval' | r}}</span>
                         </a>
                     </li>
-                    <li class="aggregator-admin" ng-class="{'active': isActive('aggregatoradmin')}" ng-if="hideTabByGroup('PROGRADE-ADMIN-PERM')">
-                        <a id="451qa_order_link" href="aggregatoradmin">
-                            <i class="fa fa-wrench"></i>
-                            <span class="hidden-xs">{{'Admin' | r}}</span>
+                    <li class="aggregator-admin" ng-class="{'active': isActive('promotions')}" ng-if="hideTabByGroup('PROGRADE-ADMIN-PERM')">
+                        <a id="451qa_order_link" href="promotions">
+                            <i class="fa fa-key"></i>
+                            <span class="hidden-xs">{{'Promotions Admin' | r}}</span>
                         </a>
                     </li>
                     <li class="report" ng-show="user.Permissions.contains('AdvancedReporting')" ng-class="{'active': isActive('reports'), 'active-xs': isActive('reports')}">
