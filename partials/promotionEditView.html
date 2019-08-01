@@ -1,0 +1,160 @@
+<style>
+    .cancel-btn {
+        position: absolute;
+        right: 12px;
+        top: 31px;
+        z-index: 10000;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title panel-primary">
+                        {{ (exists ? 'Edit Promotion' : 'New Promotion') | r}}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <loadingindicator title="Loading promotion..." ng-if="promoLoadingIndicator"></loadingindicator>
+                    <form ng-submit="submit()" class="form-horizontal" name="PromotionsEditForm">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <label for="name">Buyer</label>
+                                <input id="name" type="text" ng-model="promo.BuyerID" class="form-control" disabled />
+                            </div>
+                            <div class="col-md-2">
+                                <label for="promo-id">Promotion ID</label>
+                                <input id="promo-id" type="number" ng-model="promo.PromotionID" class="form-control" disabled placeholder="Automatic" />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="website">URL</label>
+                                <input id="website" type="url" ng-model="promo.url" placeholder="Feature Not Implemented" class="form-control" disabled />
+                            </div>
+                            <div class="col-md-1">
+                                <label for="active">Active</label>
+                                <input id="active" style="width:40px; height:40px;" type="checkbox" ng-model="promo.IsActive" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label for="coordinator">Coordinator</label>
+                                <input id="coordinator" type="text" ng-model="promo.Coordinator" class="form-control" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="contact">Contact Address</label>
+                                <input id="contact" type="email" ng-model="promo.Contact" class="form-control" placeholder="Feature Not Implemented" disabled
+                                />
+                            </div>
+                            <div class="col-md-4">
+                                <a class="btn btn-sm btn-danger cancel-btn" title="Cancel product load" ng-if="productLoadingIndicator && !promoLoadingIndicator"
+                                    ng-click="cancelProductLoad()">
+                                    <i class="fa fa-times" />
+                                </a>
+                                <loadingindicator title="Loading all products..." ng-if="productLoadingIndicator && !promoLoadingIndicator"></loadingindicator>
+                                <label for="product">Product</label>
+                                <input id="product" type="text" ng-model="promo.ProductInterop" typeahead="product.InteropID as product.ExternalID for product in products | filter:$viewValue | limitTo:10"
+                                    class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label for="start-date">Start Date</label>
+                                <datepicker id="start-date" class="well well-sm d-inline-block" ng-model="promo.StartDate"></datepicker>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="deadline">Deadline</label>
+                                <datepicker id="deadline" class="well well-sm d-inline-block" ng-model="promo.FinalDate"></datepicker>
+                            </div>
+                            <div class="col-md-4">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Quantity
+                                            </th>
+                                            <th>
+                                                Price
+                                            </th>
+                                            <th>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="break in promo.PriceMatrix track by $index">
+                                            <td>{{break.Quantity}}</td>
+                                            <td>${{break.Price}}</td>
+                                            <td class="actions-cell text-right" style="min-width:125px;">
+                                                <div class="btn-group">
+                                                    <a class="btn btn-default btn-sm" ng-click="movePriceUp($index)" ng-disabled="$index == 0">
+                                                        <i class="fa fa-arrow-up" />
+                                                    </a>
+                                                    <a class="btn btn-default btn-sm" ng-click="movePriceDown($index)" ng-disabled="$index == promo.PriceMatrix.length - 1">
+                                                        <i class="fa fa-arrow-down" />
+                                                    </a>
+                                                    <a class="btn btn-danger btn-sm" ng-click="deletePrice($index)">
+                                                        <i class="fa fa-trash-o" />
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="number" style="min-height:0px;" class="form-control input-sm" ng-model="newPrice.Quantity" />
+                                            </td>
+                                            <td>
+                                                <input type="number" style="min-height:0px;" class="form-control input-sm" ng-model="newPrice.Price" />
+                                            </td>
+                                            <td class="actions-cell text-right">
+                                                <div class="btn-group">
+                                                    <a class="btn btn-success btn-sm" ng-click="addPrice()" ng-disabled="$index == 0">
+                                                        <i class="fa fa-check" />
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--<div class="form-group">
+                            <div class="col-xs-12">
+                                <label>Banner</label>
+                                <div ng-show="bannerUploader.isHTML5">
+                                    <div nv-file-drop="" nv-file-over="" uploader="bannerUploader" over-class="file-over-class" class="well drop-zone">
+                                        <span class="text-center" ng-show="bannerUploader.queue.length < 1">Drop banner here. (970 x 360)</span>
+                                        <div class="row">
+                                            <div ng-repeat="item in bannerUploader.queue" class="col-sm-3">
+                                                <div ng-show="bannerUploader.isHTML5" class="img-thumbnail d-block text-center mb-0px" ng-thumb="{ file: item._file, width: 200 }"></div>
+                                                <span class="btn btn-danger btn-xs btn-block" ng-click="item.remove()"><i class="fa fa-trash" /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="file" nv-file-select="" uploader="bannerUploader" multiple /><br/>
+                            </div>
+                        </div>-->
+                    </form>
+                    <div class="alert alert-warning" ng-if="errors.length">
+                        <p ng-repeat="e in errors">
+                            {{e}}
+                        </p>
+                    </div>
+                    <div class="alert alert-success" ng-if="messages.length">
+                        <p ng-repeat="m in messages">
+                            {{m}}
+                        </p>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a class="btn btn-default" href="promotions">
+                        <i style="color:black !important;" class="fa fa-arrow-left" /> All Promotions</a>
+                    <div class="pull-right">
+                        <a class="btn btn-default" href="promotions">Cancel</a>
+                        <a class="btn btn-success" ng-click="submit()" ng-disabled="PromotionsEditForm.$invalid || promo.PriceMatrix.length < 2 || !promo.StartDate || !promo.FinalDate">Save</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
